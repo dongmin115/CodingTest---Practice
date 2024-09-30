@@ -4,31 +4,32 @@ const input = require('fs')
     .trim()
     .split('\n').map(e=> e.split(' ').map(Number));
 
-function solution() {
+function solution(){
     const [N,K] = input[0];
-    const increase = input[1];
+    const kit = input[1];
     let count = 0;
+    let used = new Array(N).fill(false);
 
-    function backtrack(day,currentWeight,visited){
+    function backtrack(day,currentWeight){
         if(day === N) {
             count++;
             return;
         }
 
-        for( let i=0;i<N;i++){
-            if(!visited[i]){
-                const newWeight = currentWeight + increase[i] - K;
+        for(let i=0;i<N;i++){
+            if(!used[i]){
+                const newWeight = currentWeight + kit[i] - K;
                 if(newWeight >= 500) {
-                    visited[i] = true;
-                    backtrack(day+1, newWeight, visited);
-                    visited[i] = false;
+                    used[i] = true;
+                    backtrack(day+1, newWeight);
+                    used[i] = false;
                 }
             }
         }
     }
-    const visited = new Array(N).fill(false);
 
-    backtrack(0,500, visited);
+    backtrack(0,500);
+
     console.log(count);
 
 }
