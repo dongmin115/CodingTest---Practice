@@ -13,11 +13,9 @@ function solution() {
     let closeSum = Infinity;
 
     if(liquids[0] > 0 && liquids[N-1] > 0){
-        result.push(liquids[0]);
-        result.push(liquids[1]);
+        result = [liquids[0], liquids[1]];
     } else if (liquids[0] < 0 && liquids[N-1] < 0){
-        result.push(liquids[N-2]);
-        result.push(liquids[N-1]);
+        result = [liquids[N-2], liquids[N-1]];
     } else {
         while(left < right){
             const sum = liquids[left] + liquids[right];
