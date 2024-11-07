@@ -1,42 +1,32 @@
-const readline = require('readline');
+const input = require('fs')
+    .readFileSync(process.platform === 'linux' ? '/dev/stdin' : './input.txt')
+    .toString()
+    .trim()
+    .split('\n')
+    .map(Number);
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+function solution() {
+   const N = input[0];
+   const arr = input.slice(1);
 
-const inputLines = [];
+   function isPrimeNumber(n) {
+       if(n < 2) return false;
 
-function isPrime(n) {
-    if (n < 2) return false;
-    for(let i = 2; i <= Math.sqrt(n); i++) {
-        if(n % i === 0){
-            return false
-        }
-    }
-    return true;
+       for(let i = 2; i <= Math.sqrt(n); i++) {
+           if(n % i === 0) return false;
+       }
+
+       return true;
+   }
+
+   for(let i=0; i < N; i++) {
+       let k = arr[i];
+       while(!isPrimeNumber(k)) {
+           k++;
+       }
+       console.log(k);
+   }
+
 }
 
-function nextPrime(n){
-
-    n.forEach((e)=>{
-
-        while(!isPrime(e)){
-            e++;
-        }
-        console.log(`${e}`);
-    })
-
-}
-
-rl.on('line',(line)=>{
-    inputLines.push(line.trim());
-
-    if(inputLines.length > inputLines[0]){
-        rl.close();
-    }
-})
-
-rl.on('close',()=>{
-    nextPrime(inputLines.slice(1));
-})
+solution();
