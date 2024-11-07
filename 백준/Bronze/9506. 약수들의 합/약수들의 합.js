@@ -1,41 +1,33 @@
-const readline = require('readline');
+const input = require('fs')
+    .readFileSync(process.platform === 'linux' ? '/dev/stdin' : './input.txt')
+    .toString()
+    .trim()
+    .split('\n')
+    .map(Number);
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+function solution() {
 
-let inputLines = [];
+    function isPerfectNumber(n) {
+        const arr = [];
 
-function isPerfectNumber(n){
+        for(let i=1; i<=Math.floor(n/2); i++) {
+            if(n % i === 0) {
+                arr.push(i);
+            }
+        }
 
-    let arr = [];
-    let sum = 0;
+        const sum = arr.reduce((acc, cur) => acc + cur, 0);
 
-    for (let i = 1; i <= Math.floor(n / 2); i++) {
-        if (n % i === 0) {
-            arr.push(i);
-            sum += i;
+        if(n === sum) {
+            console.log(`${n} = ${arr.sort((a, b) => a - b).join(' + ')}`);
+        } else {
+            console.log(`${n} is NOT perfect.`)
         }
     }
 
-    if (sum === n) {
-        return console.log(`${n} = ${arr.join(' + ')}`);
-    } else {
-        return console.log(`${n} is NOT perfect.`);
+    for(let i=0; i < input.length - 1; i++) {
+        isPerfectNumber(input[i]);
     }
 }
 
-rl.on('line', (line)=> {
-    const n = parseInt(line);
-    if(n === -1){
-        rl.close();
-    }else {
-        inputLines.push(n);
-    }
-})
-
-rl.on('close', () => {
-    const results = inputLines.map(isPerfectNumber);
-    console.log(results.join('\n'));
-});
+solution();
