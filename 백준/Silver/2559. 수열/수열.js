@@ -2,27 +2,26 @@ const input = require('fs')
     .readFileSync(process.platform === 'linux' ? '/dev/stdin' : './input.txt')
     .toString()
     .trim()
-    .split('\n').map(e=>e.split(' ').map(Number));
+    .split('\n')
+    .map(e => e.split(' ').map(Number));
 
 function solution() {
-    const size = input[0][1];
-    const tempArr = input[1];
-    let result = -Infinity;
+    const [ N, K ] = input[0];
+    const temperature = input[1];
+    let sum = 0
 
-    for( let i=0; i <= tempArr.length - size; i++ ){
-        let sum = 0;
 
-        for( let j=0; j < size; j++ ){
-            sum += tempArr[i+j];
-        }
-
-        if( result < sum) {
-            result = sum;
-        }
+    for(let i=0; i<K; i++) {
+        sum += temperature[i];
     }
 
-    console.log(result);
+    let maxSum = sum;
 
+    for(let j=K; j<N; j++) {
+        sum += temperature[j] - temperature[j-K]
+        maxSum = Math.max(maxSum, sum);
+    }
+    console.log(maxSum);
 }
 
 solution();
