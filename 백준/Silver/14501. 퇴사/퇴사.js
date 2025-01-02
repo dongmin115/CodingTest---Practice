@@ -2,33 +2,30 @@ const input = require('fs')
     .readFileSync(process.platform === 'linux' ? '/dev/stdin' : './input.txt')
     .toString()
     .trim()
-    .split('\n');
+    .split('\n')
+    .map(e => e.split(' ').map(Number));
 
 function solution() {
-    const N = Number(input[0]);
-    const consult = input.slice(1).map(e => e.split(' ').map(Number));
-    let maxPay = 0;
+    const N = input[0][0];
+    const calendar = input.slice(1);
+    let max = 0;
 
-    function dfs(day, pay) {
-        if (day >= N) {
-            maxPay = Math.max(maxPay, pay);
+    function recursive(day,pay){
+        if(day > N){
+            max = Math.max(max, pay);
             return;
         }
 
-        const [t, p] = consult[day];
+        recursive(day + 1, pay);
 
-        // 1. 상담을 하지 않고 넘어가는 경우
-        dfs(day + 1, pay);
-
-        // 2. 상담을 진행하는 경우
-        if (day + t <= N) {
-            dfs(day + t, pay + p);
+        if(day + calendar[day-1][0] -1 <= N){
+            recursive(day + calendar[day-1][0], pay + calendar[day-1][1]);
         }
     }
 
-    dfs(0, 0);  // 0일차부터 상담 시작
+    recursive(1,0);
 
-    console.log(maxPay);
+    console.log(max);
 }
 
 solution();
