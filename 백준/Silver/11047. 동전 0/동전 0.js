@@ -2,28 +2,24 @@ const input = require('fs')
     .readFileSync(process.platform === 'linux' ? '/dev/stdin' : './input.txt')
     .toString()
     .trim()
-    .split('\n').map(e=>e.split(' ').map(Number));
-
+    .split('\n');
 
 function solution() {
-    let [ _, K ] = input[0];
-    const coins = input.slice(1).flat();
+    const [N,K] = input[0].split(' ').map(Number);
+    const coins = input.slice(1).reverse().map(Number);
+    let current = K;
     let result = 0;
 
-    coins.reverse();
-
-    for (let i=0; i<coins.length; i++) {
-        if( K >= coins[i] ){
-            result += Math.floor(K / coins[i]);
-            K = K % coins[i];
-        }
-
-        if( K === 0) {
-            break;
+    for(let i=0; i<N; i++) {
+        if(current >= coins[i]){
+            const a = Math.floor(current / coins[i]);
+            current -= coins[i] * a;
+            result += a
         }
     }
 
     console.log(result);
+
 }
 
-solution()
+solution();
