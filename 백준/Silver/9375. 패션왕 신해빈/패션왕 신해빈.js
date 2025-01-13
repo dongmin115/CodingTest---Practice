@@ -4,34 +4,29 @@ const input = require('fs')
     .trim()
     .split('\n');
 
+function solution() {
+    const T = Number(input[0]);
+    const testCase = input.slice(1);
+    let idx = 0;
+    const answer = [];
 
-function solution(){
-    let index = 0;
-    const test = Number(input[index++]);
+    for(let i=0; i<T; i++) {
+        const n = Number(testCase[idx++]);
+        const map = {};
 
-    for( let i=0;i<test;i++){
-        const n = Number(input[index++]);
-        const clothes = {};
-
-        for(let j=0; j<n;j++){
-            const [name, kind] = input[index++].split(' ');
-
-            if(clothes[kind]){
-                clothes[kind]++;
-            } else {
-                clothes[kind] = 1;
-            }
+        for(let j=0; j<n; j++) {
+            const [name, category] = testCase[idx++].split(' ');
+            map[category] = (map[category] || 0) + 1;
         }
 
-        let combinations = 1;
-        for (const kind in clothes) {
-            combinations *= (clothes[kind] + 1);
-        }
-
-        console.log(combinations - 1);
-
+        let result = 1;
+        Object.entries(map).map(([_,count]) => {
+            result *= count + 1;
+        })
+        answer.push(result-1);
     }
-
+    
+    console.log(answer.join('\n'));
 }
 
 solution();
